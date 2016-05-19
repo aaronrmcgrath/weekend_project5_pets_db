@@ -21,12 +21,12 @@ var Pet = mongoose.model('Pet');
 // GET
 app.get('/pets', function(req, res){
   Pet.find({}).exec(function(err, data){
-        if(err){
-          console.log(err);
-        }
-        res.send(data);
-    });
+    if(err){
+      console.log(err);
+    }
+    res.send(data);
   });
+});
 
 
 // POST
@@ -57,6 +57,7 @@ mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
   // Save database object from the callback for reuse.
   db = database;
   console.log("Database connection ready");
+});
 
 app.set('port', (process.env.PORT || 8000));
 
