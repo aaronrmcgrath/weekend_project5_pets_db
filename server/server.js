@@ -44,7 +44,21 @@ app.get('/*', function(req,res) {
   res.sendFile(path.join(__dirname, '/public/', file));
 });
 
-app.set('port', (process.env.MONGOLAB_URI || 8000));
+// Create a database variable outside of the database connection callback to reuse the connection pool in your app.
+var db;
+
+// Connect to the database before starting the application server.
+mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
+  if (err) {
+    console.log(err);
+    process.exit(1);
+  }
+
+  // Save database object from the callback for reuse.
+  db = database;
+  console.log("Database connection ready");
+
+app.set('port', (process.env.PORT || 8000));
 
 app.listen(app.get('port'), function() {
   console.log('Listening on port: ', app.get('port'));
